@@ -18,7 +18,8 @@ print("Tare done. Start reading values...")
 while True:
     try:
         val = hx.get_weight(5)
-        print(f"Weight: {val} grams")
+        force = (val/1000)*9.8
+        print(f"Force: {force} newtons")
         time.sleep(0.1)
     except (KeyboardInterrupt, SystemExit):
         GPIO.cleanup()
