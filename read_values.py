@@ -5,22 +5,20 @@ from hx711 import HX711
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
-hx = HX711(5, 6)  # DOUT = 5, SCK = 6
+hx = HX711(5, 6)  # DOUT = GPIO 5, SCK = GPIO 6
 
-# Reset and zero manually
+hx.set_reading_format("MSB", "MSB")
+hx.set_reference_unit(1)  # You’ll need to calibrate this later
+
 hx.reset()
+hx.tare()
 
-print("Start reading values from strain gauge (raw output)")
-
-# You can capture a baseline (for "tare") manually if you like
-baseline = hx.get_value(10)
-print(f"Baseline (tare): {baseline}")
+print("Tare done. Start reading values...")
 
 while True:
     try:
-        val = hx.get_value(5)
-        weight = val - baseline  # simulate tare
-        print(f"Weight (raw adjusted): {weight}")
+        val = hx.get_weight(5)
+        print(f"Weight: {val} grams")
         time.sleep(0.1)
     except (KeyboardInterrupt, SystemExit):
         GPIO.cleanup()
